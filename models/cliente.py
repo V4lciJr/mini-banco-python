@@ -1,0 +1,45 @@
+from utils.helper import date, date_for_str, str_for_date
+
+
+class Cliente:
+    id = 1001
+
+    def __init__(self, nome, cpf, data_nascimento, email):
+        self.__id_cliente = Cliente.id
+        self.__nome = nome
+        self.__email = email
+        self.__cpf = cpf
+        self.__data_cadastro = date.today()
+        self.__data_nascimento = str_for_date(data_nascimento)
+        Cliente.id += 1
+
+    @property
+    def id_cliente(self):
+        return self.__id_cliente
+
+    @property
+    def nome(self):
+        return self.__nome
+
+    @property
+    def cpf(self):
+        return self.__cpf
+
+    @property
+    def email(self):
+        return self.__email
+
+    @property
+    def data_cadastro(self):
+        return date_for_str(self.__data_cadastro)
+
+    @property
+    def data_nascimento(self):
+        return date_for_str(self.__data_nascimento)
+
+    def __str__(self):
+        return f'Conta - {self.id_cliente}'\
+               f'Nome: {self.nome}\n' \
+               f'CFP: {self.__cpf}\n' \
+               f'E-mail: {self.email}\n' \
+               f'Data de Cadastro: {self.__data_cadastro}'
