@@ -1,8 +1,8 @@
-from utils.helper import date, date_for_str, str_for_date
+from utils.helper import *
 
 
 class Cliente:
-    id = 1001
+    id = 100
 
     def __init__(self, nome, cpf, data_nascimento, email):
         self.__id_cliente = Cliente.id
@@ -38,7 +38,7 @@ class Cliente:
         return date_for_str(self.__data_nascimento)
 
     def __str__(self):
-        return f'Conta - {self.id_cliente}'\
+        return f'ID Cliente - {self.id_cliente}'\
                f'Nome: {self.nome}\n' \
                f'CFP: {self.__cpf}\n' \
                f'E-mail: {self.email}\n' \
