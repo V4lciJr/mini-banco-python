@@ -1,4 +1,4 @@
-from cliente import Cliente, format_float_for_str
+from utils.helper import format_float_for_str
 from utils.exceptions import ValueMenorZero
 
 
@@ -44,7 +44,7 @@ class Conta:
     def __str__(self):
         return f'Número da Conta: {self.numero}\n' \
                f'Cliente: {self.cliente.nome}\n' \
-               f'Saldo Total: {format_float_for_str(self.saldo_total)}'
+               f'Saldo Total:{format_float_for_str(self.saldo_total)}'
 
     def depositar(self, valor):
         if valor > 0:
