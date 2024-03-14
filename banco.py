@@ -5,11 +5,23 @@ from utils.menu import menu
 
 
 contas = []
+clientes = []
 
 
 def application():
-    menu()
-    pass
+
+    while True:
+        print(menu())
+
+        op = int(input("         => "))
+
+        if op == 0:
+            print('\t\tAgradecemos à preferência. É um prazer tê-lo conosco!!!')
+            print('\t\tVolte Sempre!!!')
+            sleep(1)
+            break
+        else:
+            print('\t\tOperação Inválida. Volte ao Menu e digite uma opção válida.')
 
 
 def criar_conta():
@@ -29,6 +41,10 @@ def efetuar_transferencia():
 
 
 def listar_contas():
+    pass
+
+
+def listar_clientes():
     pass
 
 

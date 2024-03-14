@@ -25,9 +25,6 @@ class Conta:
     def saldo(self):
         return self.__saldo
 
-    @saldo.setter
-    def saldo(self, value):
-        self.saldo = value
 
     @property
     def limite(self):
@@ -42,13 +39,13 @@ class Conta:
         return self.saldo + self.limite
 
     def __str__(self):
-        return f'Número da Conta: {self.numero}\n' \
-               f'Cliente: {self.cliente.nome}\n' \
-               f'Saldo Total:{format_float_for_str(self.saldo_total)}'
+        return f'''        Número da Conta: {self.numero}
+        Cliente: {self.cliente.nome}
+        Saldo Total:{format_float_for_str(self.saldo_total)}'''
 
     def depositar(self, valor):
         if valor > 0:
-            self.saldo = valor
+            self.__saldo = valor
         else:
             raise ValueMenorZero
 

@@ -1,4 +1,5 @@
 from utils.helper import *
+from datetime import date
 
 
 class Cliente:
@@ -38,8 +39,8 @@ class Cliente:
         return date_for_str(self.__data_nascimento)
 
     def __str__(self):
-        return f'ID Cliente - {self.id_cliente}\n'\
-               f'Nome: {self.nome}\n' \
-               f'CFP: {self.__cpf}\n' \
-               f'E-mail: {self.email}\n' \
-               f'Data de Cadastro: {date_for_str(self.__data_cadastro)}'
+        return f'''        ID Cliente - {self.id_cliente}
+        Nome: {self.nome}
+        CFP: {self.__cpf}
+        E-mail: {self.email}
+        Data de Cadastro: {date_for_str(self.__data_cadastro)}'''

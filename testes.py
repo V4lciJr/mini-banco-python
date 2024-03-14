@@ -9,3 +9,4 @@ conta_2 = Conta(cliente_2)
 
 
 print(conta_1)
+print(cliente_1)
