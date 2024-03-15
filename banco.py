@@ -5,7 +5,6 @@ from utils.menu import menu
 
 contas = []
 clientes = []
-conta_atual = None
 
 
 def application():
@@ -45,29 +44,43 @@ def criar_conta():
 
     cliente = Cliente(nome, cpf, data_nascimento, email)
     conta = Conta(cliente)
-    global conta_atual
-    conta_atual = conta
 
     contas.append(conta)
     clientes.append(cliente)
 
-    print('Conta cadastrada com sucesso!!')
-    print('Dadoa da Conta: ')
-    print('******************************')
+    print('\t\tConta cadastrada com sucesso!!')
+    print('\t\tDados da Conta: ')
+    print('\t\t******************************')
     print(conta)
-    sleep(1)
+    sleep(1.5)
 
 
 def efetuar_saque():
-    if possui_contas(contas):
-        valor = float(input("Informe o valor que deseja sacar: R$ "))
-    sleep(1)
+    if possui_contas:
+        numero_conta = int(input('Digite o número da sua conta: '))
+        conta = buscar_conta_por_numero(numero_conta)
+
+        if conta:
+            valor = float(input("Informe o valor que deseja sacar: R$ "))
+            conta.sacar(valor)
+        else:
+            print(f'Não foram encontradas contas com o número {numero_conta}!!')
+
+    sleep(1.5)
 
 
 def efetuar_deposito():
-    if possui_contas(contas):
-        valor = float(input("Informe o valor que deseja depositar: R$ "))
-    sleep(1)
+    if possui_contas:
+        numero_conta = int(input('Digite o número da sua conta: '))
+        conta = buscar_conta_por_numero(numero_conta)
+
+        if conta:
+            valor = float(input("Informe o valor que deseja depositar: R$ "))
+            conta.depositar(valor)
+        else:
+            print(f'Não foram encontradas contas com o número {numero_conta}!!')
+
+    sleep(1.5)
 
 
 def efetuar_transferencia():
@@ -79,20 +92,27 @@ def listar_contas():
 
 
 def listar_clientes():
+
+    if possui_clientes:
+        print('\t\tLista de Clientes')
+        print('\t\t'+'*' * 30)
+        for cliente in clientes:
+            print(cliente)
+            print('\t\t'+'*' * 30)
+
+    sleep(1.5)
+
+
+def buscar_conta_por_numero(numero_conta):
     pass
 
 
-def buscar_conta_por_numero():
-    pass
+def possui_contas():
+    return True if len(contas) > 0 else print('\t\t Ainda não existem contas cadastradas!!')
 
 
-def possui_contas(lista_contas):
-    return True if len(lista_contas) > 0 else print('\t\t Ainda não existem contas cadastradas!!')
-
-
-def possui_clientes(lista_clientes):
-    return True if len(lista_clientes) > 0 else print('\t\t Ainda não existem clientes cadastradoas!!!')
-
+def possui_clientes():
+    return True if len(clientes) > 0 else print('\t\t Ainda não existem clientes cadastradoas!!!')
 
 
 if __name__ == '__main__':
