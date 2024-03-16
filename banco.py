@@ -2,6 +2,7 @@ from time import sleep
 from models.cliente import Cliente
 from models.conta import Conta
 from utils.menu import menu
+from os import system
 
 contas = []
 clientes = []
@@ -9,6 +10,7 @@ clientes = []
 
 def application():
     while True:
+        system('cls')
         print(menu())
 
         op = int(input("         => "))
@@ -31,8 +33,11 @@ def application():
             listar_contas()
         elif op == 6:
             listar_clientes()
+        elif op == 7:
+            pesquisar_conta()
         else:
             print('\t\t Operação Inválida. Volte ao Menu e digite uma opção válida.')
+            sleep(2)
 
 
 def criar_conta():
@@ -52,11 +57,11 @@ def criar_conta():
     print('\t\tDados da Conta: ')
     print('\t\t******************************')
     print(conta)
-    sleep(1.5)
+    sleep(2)
 
 
 def efetuar_saque():
-    if possui_contas:
+    if possui_contas():
         numero_conta = int(input('Digite o número da sua conta: '))
         conta = buscar_conta_por_numero(numero_conta)
 
@@ -66,11 +71,11 @@ def efetuar_saque():
         else:
             print(f'Não foram encontradas contas com o número {numero_conta}!!')
 
-    sleep(1.5)
+    sleep(2)
 
 
 def efetuar_deposito():
-    if possui_contas:
+    if possui_contas():
         numero_conta = int(input('Digite o número da sua conta: '))
         conta = buscar_conta_por_numero(numero_conta)
 
@@ -78,9 +83,10 @@ def efetuar_deposito():
             valor = float(input("Informe o valor que deseja depositar: R$ "))
             conta.depositar(valor)
         else:
-            print(f'Não foram encontradas contas com o número {numero_conta}!!')
+            print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
+            efetuar_deposito()
 
-    sleep(1.5)
+    sleep(2)
 
 
 def efetuar_transferencia():
@@ -96,6 +102,7 @@ def efetuar_transferencia():
             if conta_dest:
                 valor = float(input("Informe o valor que deseja transferir: R$ "))
                 conta_org.transferir(conta_dest,valor)
+                print('Operação realizada com sucesso!!!')
             else:
                 print(f'\t\t Não encontramos a conta de número {numero_conta_dest}')
 
@@ -113,19 +120,31 @@ def listar_contas():
             print(conta)
             print('\t\t' + '*' * 30)
 
-    sleep(1.5)
+    sleep(2)
 
 
 def listar_clientes():
 
-    if possui_clientes:
+    if possui_clientes():
         print('\t\tLista de Clientes')
         print('\t\t'+'*' * 30)
         for cliente in clientes:
             print(cliente)
             print('\t\t'+'*' * 30)
 
-    sleep(1.5)
+    sleep(2)
+
+def pesquisar_conta():
+    if possui_contas():
+        numero_conta = int(input('Digite o número da conta que deseja pesquisar: '))
+        conta = buscar_conta_por_numero(numero_conta)
+
+        if conta:
+            print(conta)
+            sleep(2)
+        else:
+            print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
+            pesquisar_conta()
 
 
 def buscar_conta_por_numero(numero_conta):
@@ -138,11 +157,11 @@ def buscar_conta_por_numero(numero_conta):
     return None
 
 def possui_contas():
-    return True if len(contas) > 0 else print('\t\t Ainda não existem contas cadastradas!!')
+    return True if len(contas) > 0 else print('\t\t Ainda não possuem contas cadastradas!!')
 
 
 def possui_clientes():
-    return True if len(clientes) > 0 else print('\t\t Ainda não existem clientes cadastradoas!!!')
+    return True if len(clientes) > 0 else print('\t\t Ainda não possuem clientes cadastrados!!')
 
 
 if __name__ == '__main__':
