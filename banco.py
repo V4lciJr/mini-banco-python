@@ -84,11 +84,36 @@ def efetuar_deposito():
 
 
 def efetuar_transferencia():
-    pass
+
+    if possui_contas():
+        numero_conta_org = int(input('Digite o número da sua conta: '))
+        conta_org = buscar_conta_por_numero(numero_conta_org)
+
+        if conta_org:
+            numero_conta_dest = int(input('Informe o numero da conta de destino da sua transferência: '))
+            conta_dest = buscar_conta_por_numero(numero_conta_dest)
+
+            if conta_dest:
+                valor = float(input("Informe o valor que deseja transferir: R$ "))
+                conta_org.transferir(conta_dest,valor)
+            else:
+                print(f'\t\t Não encontramos a conta de número {numero_conta_dest}')
+
+        else:
+            print(f'\t\t Não encontramos a conta de número {numero_conta_org}')
+
 
 
 def listar_contas():
-    pass
+
+    if possui_contas():
+        print('\t\tLista de Contas')
+        print('\t\t' + '*' * 30)
+        for conta in contas:
+            print(conta)
+            print('\t\t' + '*' * 30)
+
+    sleep(1.5)
 
 
 def listar_clientes():
@@ -104,8 +129,13 @@ def listar_clientes():
 
 
 def buscar_conta_por_numero(numero_conta):
-    pass
 
+    if len(contas) > 0:
+        for conta in contas:
+            if numero_conta == conta.numero:
+                return conta
+
+    return None
 
 def possui_contas():
     return True if len(contas) > 0 else print('\t\t Ainda não existem contas cadastradas!!')
