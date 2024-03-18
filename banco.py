@@ -6,6 +6,7 @@ from os import system
 
 contas = []
 clientes = []
+extrato = ''
 
 
 def application():
@@ -35,6 +36,10 @@ def application():
             listar_clientes()
         elif op == 7:
             pesquisar_conta()
+        elif op == 8:
+            pesquisar_cliente()
+        elif op == 9:
+            imprimir_extrato()
         else:
             print('\t\t Operação Inválida. Volte ao Menu e digite uma opção válida.')
             sleep(2)
@@ -53,9 +58,9 @@ def criar_conta():
     contas.append(conta)
     clientes.append(cliente)
 
-    print('\t\tConta cadastrada com sucesso!!')
-    print('\t\tDados da Conta: ')
-    print('\t\t******************************')
+    print('\t\t Conta cadastrada com sucesso!!')
+    print('\t\t Dados da Conta: ')
+    print('\t\t ' + '*' * 40)
     print(conta)
     sleep(2)
 
@@ -109,16 +114,17 @@ def efetuar_transferencia():
         else:
             print(f'\t\t Não encontramos a conta de número {numero_conta_org}')
 
+    sleep(2)
 
 
 def listar_contas():
 
     if possui_contas():
-        print('\t\tLista de Contas')
-        print('\t\t' + '*' * 30)
+        print('\t\t Lista de Contas')
+        print('\t\t ' + '*' * 40)
         for conta in contas:
             print(conta)
-            print('\t\t' + '*' * 30)
+            print('\t\t ' + '*' * 40)
 
     sleep(2)
 
@@ -126,11 +132,11 @@ def listar_contas():
 def listar_clientes():
 
     if possui_clientes():
-        print('\t\tLista de Clientes')
-        print('\t\t'+'*' * 30)
+        print('\t\t Lista de Clientes')
+        print('\t\t '+'*' * 40)
         for cliente in clientes:
             print(cliente)
-            print('\t\t'+'*' * 30)
+            print('\t\t '+'*' * 40)
 
     sleep(2)
 
@@ -146,15 +152,50 @@ def pesquisar_conta():
             print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
             pesquisar_conta()
 
+    sleep(2)
+
+def pesquisar_cliente():
+    if possui_clientes():
+        numero_cliente = int(input('Digite o ID do cliente que deseja pesquisar: '))
+        cliente = buscar_cliente_por_numero(numero_cliente)
+
+        if cliente:
+            print(cliente)
+            sleep(2)
+        else:
+            print(f'Não encontramos cliente(s) com o número {numero_cliente}. Verifique o ID do cliente!!')
+            pesquisar_cliente()
+
+    sleep(2)
+
+
+def imprimir_extrato():
+    if possui_contas():
+        numero_conta = int(input('Digite o número da conta que deseja verificar o extrato: '))
+        conta = buscar_conta_por_numero(numero_conta)
+
+        if conta:
+            conta.exibir_extrato()
+            sleep(2)
+        else:
+            print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
+            imprimir_extrato()
 
 def buscar_conta_por_numero(numero_conta):
 
-    if len(contas) > 0:
-        for conta in contas:
-            if numero_conta == conta.numero:
-                return conta
-
+    for conta in contas:
+        if numero_conta == conta.numero:
+            return conta
     return None
+
+
+def buscar_cliente_por_numero(id_cliente):
+
+    for cliente in clientes:
+        if id_cliente == cliente.id_cliente:
+            return cliente
+    return None
+
 
 def possui_contas():
     return True if len(contas) > 0 else print('\t\t Ainda não possuem contas cadastradas!!')
