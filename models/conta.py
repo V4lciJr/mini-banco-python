@@ -63,12 +63,11 @@ class Conta:
 
     def depositar(self, valor):
 
-        if self.__valor_maior_q_zero(valor):
-            self._saldo += valor
-            self._saldo_total = self.__calcula_saldo_total
-            self._extrato += f'\t\t => Depósito   R$ {valor:.2f}   {date_for_str(date.today())}\n'
-            print(f'Valor de R$ {valor:.2f} depositados com sucesso!!')
-            print(f'Saldo Atual R$ {self.saldo_total:.2f}')
+        self._saldo += valor
+        self._saldo_total = self.__calcula_saldo_total
+        self._extrato += f'\t\t => Depósito   R$ {valor:.2f}   {date_for_str(date.today())}\n'
+        print(f'Valor de R$ {valor:.2f} depositados com sucesso!!')
+        print(f'Saldo Atual R$ {self.saldo_total:.2f}')
 
 
     def sacar(self, valor):
@@ -86,6 +85,3 @@ class Conta:
         print(f'\t\t Limite Cheque Especial:   {format_float_for_str(self.limite)}')
         print(f'\n\t\t Saldo Total:              {format_float_for_str(self.saldo_total)}')
         print('\t\t ' + '*' * 40)
-
-    def __valor_maior_q_zero(self, valor):
-        return True if valor > 0 else print('\t\t Valor inválido!! Por favor digite um valor maior que 0, para efetuar sua operação!!')

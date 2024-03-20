@@ -6,7 +6,6 @@ from os import system
 
 contas = []
 clientes = []
-extrato = ''
 
 
 def application():
@@ -74,7 +73,7 @@ def efetuar_saque():
             valor = float(input("Informe o valor que deseja sacar: R$ "))
             conta.sacar(valor)
         else:
-            print(f'Não foram encontradas contas com o número {numero_conta}!!')
+            print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
 
     sleep(2)
 
@@ -84,12 +83,12 @@ def efetuar_deposito():
         numero_conta = int(input('Digite o número da sua conta: '))
         conta = buscar_conta_por_numero(numero_conta)
 
-        if conta:
-            valor = float(input("Informe o valor que deseja depositar: R$ "))
-            conta.depositar(valor)
-        else:
-            print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
-            efetuar_deposito()
+        if valida_conta(conta, numero_conta, efetuar_deposito):
+            valor = ler_valor()
+            valida_valor, valor = valor_maior_q_zero(valor)
+            if valida_valor:
+                conta.depositar(valor)
+
 
     sleep(2)
 
@@ -196,6 +195,26 @@ def buscar_cliente_por_numero(id_cliente):
             return cliente
     return None
 
+
+def valor_maior_q_zero(valor):
+    if valor <= 0:
+        print('\t\t Valor inválido!! Por favor digite um valor maior que 0, para efetuar sua operação!!')
+        valor = ler_valor()
+        return valor_maior_q_zero(valor)
+    else:
+        return True, valor
+
+def valida_conta(conta, numero_conta, funcao_banco):
+    if conta:
+        return True
+    else:
+        print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
+        funcao_banco()
+
+
+def ler_valor():
+    valor = float(input("Informe o valor que deseja depositar: R$ "))
+    return valor
 
 def possui_contas():
     return True if len(contas) > 0 else print('\t\t Ainda não possuem contas cadastradas!!')

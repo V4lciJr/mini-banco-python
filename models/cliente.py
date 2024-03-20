@@ -39,8 +39,8 @@ class Cliente:
         return date_for_str(self.__data_nascimento)
 
     def __str__(self):
-        return f'''        ID Cliente - {self.id_cliente}
-        Nome: {self.nome}
-        CFP: {self.__cpf}
-        E-mail: {self.email}
-        Data de Cadastro: {date_for_str(self.__data_cadastro)}'''
+        return f'''          ID Cliente - {self.id_cliente}
+          Nome: {self.nome}
+          CFP:  {self.__cpf}
+          E-mail: {self.email}
+          Data de Cadastro: {date_for_str(self.__data_cadastro)}'''
