@@ -34,6 +34,10 @@ class Conta:
     def limite(self):
         return self.__limite
 
+    @limite.setter
+    def _limite(self, valor):
+        self.__limite = valor
+
     @property
     def saldo_total(self):
         return self.__saldo_total
@@ -71,7 +75,22 @@ class Conta:
 
 
     def sacar(self, valor):
-        pass
+
+        if valor <= self.saldo:
+            self._saldo -= valor
+            self._saldo_total = self.__calcula_saldo_total
+        else:
+            resto = self.saldo - valor
+            if self.limite >= resto:
+                self._limite += resto
+                self._saldo = resto
+                self._saldo_total = self.__calcula_saldo_total
+            else:
+                print(f'\t\t Saque não efetuado!! Valor maior que o limite de cheque especial.\n\t\t Limite: R$ {self.limite:.2f}.')
+
+        self._extrato += f'\t\t => Saque      R$ {valor:.2f}   {date_for_str(date.today())}\n'
+        print(f'Saque de R$ {valor:.2f} efetuado com sucesso!!')
+        print(f'Saldo Atual R$ {self.saldo_total:.2f}')
 
     def transferir(self, conta_destino, valor):
         pass

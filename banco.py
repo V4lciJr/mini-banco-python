@@ -66,29 +66,29 @@ def criar_conta():
 
 def efetuar_saque():
     if possui_contas():
+        tipo_operacao = 'sacar'
         numero_conta = int(input('Digite o número da sua conta: '))
         conta = buscar_conta_por_numero(numero_conta)
 
-        if conta:
-            valor = float(input("Informe o valor que deseja sacar: R$ "))
-            conta.sacar(valor)
-        else:
-            print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
+        if valida_conta(conta, numero_conta, efetuar_saque):
+            valor = ler_valor(tipo_operacao)
+            eh_menor, valor = valor_menor_q_saldo_total(valor, conta.saldo_total, tipo_operacao)
+            if eh_menor:
+                conta.sacar(valor)
 
-    sleep(2)
 
 
 def efetuar_deposito():
     if possui_contas():
+        tipo_operacao = 'depositar'
         numero_conta = int(input('Digite o número da sua conta: '))
         conta = buscar_conta_por_numero(numero_conta)
 
         if valida_conta(conta, numero_conta, efetuar_deposito):
-            valor = ler_valor()
-            valida_valor, valor = valor_maior_q_zero(valor)
+            valor = ler_valor(tipo_operacao)
+            valida_valor, valor = valor_maior_q_zero(valor, tipo_operacao)
             if valida_valor:
                 conta.depositar(valor)
-
 
     sleep(2)
 
@@ -196,13 +196,25 @@ def buscar_cliente_por_numero(id_cliente):
     return None
 
 
-def valor_maior_q_zero(valor):
+def valor_maior_q_zero(valor, tipo_operacao):
     if valor <= 0:
         print('\t\t Valor inválido!! Por favor digite um valor maior que 0, para efetuar sua operação!!')
-        valor = ler_valor()
-        return valor_maior_q_zero(valor)
+        valor = ler_valor(tipo_operacao)
+        return valor_maior_q_zero(valor, tipo_operacao)
     else:
         return True, valor
+
+
+def valor_menor_q_saldo_total(valor, saldo_total, tipo_operacao):
+    valida_valor, valor = valor_maior_q_zero(valor, tipo_operacao)
+
+    if valida_valor:
+        if valor > saldo_total:
+            print(f'\t\t Você não possui saldo suficiente para saque!!\n\t\t Saldo Total: R$ {saldo_total: .2f}!!')
+            valor = ler_valor(tipo_operacao)
+            return valor_menor_q_saldo_total(valor, saldo_total, tipo_operacao)
+        else:
+            return True, valor
 
 def valida_conta(conta, numero_conta, funcao_banco):
     if conta:
@@ -212,8 +224,8 @@ def valida_conta(conta, numero_conta, funcao_banco):
         funcao_banco()
 
 
-def ler_valor():
-    valor = float(input("Informe o valor que deseja depositar: R$ "))
+def ler_valor(tipo_operacao):
+    valor = float(input(f"Informe o valor que deseja {tipo_operacao}: R$ "))
     return valor
 
 def possui_contas():
