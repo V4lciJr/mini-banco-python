@@ -4,12 +4,13 @@ from datetime import date
 
 class Conta:
     codigo = 1001
+    limite = 200
 
     def __init__(self, cliente):
         self.__numero = Conta.codigo
         self.__cliente = cliente
         self.__saldo = 0
-        self.__limite = 200
+        self.__limite = Conta.limite
         self.__saldo_total = self.__calcula_saldo_total
         self.__extrato = ''
         Conta.codigo += 1
@@ -69,12 +70,14 @@ class Conta:
 
         self._saldo += valor
         self._saldo_total = self.__calcula_saldo_total
-        self._extrato += f'\t\t => Depósito   R$ {valor:.2f}   {date_for_str(date.today())}\n'
+        if self.saldo <= 0 and self.limite < Conta.limite and valor <= Conta.limite:
+            self.limite += valor
+        self._extrato += f'\t\t => Depósito    R$ {valor:.2f}    {date_for_str(date.today())}\n'
         print(f'Valor de R$ {valor:.2f} depositados com sucesso!!')
         print(f'Saldo Atual R$ {self.saldo_total:.2f}')
 
 
-    def sacar(self, valor):
+    def sacar(self, valor, msg):
 
         if valor <= self.saldo:
             self._saldo -= valor
@@ -88,13 +91,13 @@ class Conta:
             else:
                 print(f'\t\t Saque não efetuado!! Valor maior que o limite de cheque especial.\n\t\t Limite: R$ {self.limite:.2f}.')
 
-        self._extrato += f'\t\t => Saque      R$ {valor:.2f}   {date_for_str(date.today())}\n'
-        print(f'Saque de R$ {valor:.2f} efetuado com sucesso!!')
+        self._extrato += f'\t\t => Saque      -R$ {valor:.2f}    {date_for_str(date.today())}\n'
+        print(f'{msg} {valor:.2f} efetuado com sucesso!!')
         print(f'Saldo Atual R$ {self.saldo_total:.2f}')
 
     def transferir(self, conta_destino, valor):
-        pass
-
+        self.sacar(valor, 'Transferência de R$')
+        conta_destino.depositar(valor)
     def exibir_extrato(self):
         print('\t\t ************** Extrato *****************')
         print('\t\t -  Operação   | Valor R$   | Data  -')
@@ -104,3 +107,5 @@ class Conta:
         print(f'\t\t Limite Cheque Especial:   {format_float_for_str(self.limite)}')
         print(f'\n\t\t Saldo Total:              {format_float_for_str(self.saldo_total)}')
         print('\t\t ' + '*' * 40)
+
+

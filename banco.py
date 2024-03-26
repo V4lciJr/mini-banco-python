@@ -41,7 +41,7 @@ def application():
             imprimir_extrato()
         else:
             print('\t\t Operação Inválida. Volte ao Menu e digite uma opção válida.')
-            sleep(2)
+        sleep(2)
 
 
 def criar_conta():
@@ -74,7 +74,7 @@ def efetuar_saque():
             valor = ler_valor(tipo_operacao)
             eh_menor, valor = valor_menor_q_saldo_total(valor, conta.saldo_total, tipo_operacao)
             if eh_menor:
-                conta.sacar(valor)
+                conta.sacar(valor, 'Saque de R$')
 
 
 
@@ -90,31 +90,19 @@ def efetuar_deposito():
             if valida_valor:
                 conta.depositar(valor)
 
-    sleep(2)
-
 
 def efetuar_transferencia():
-
+    tipo_operacao = 'transferir'
     if possui_contas():
-        numero_conta_org = int(input('Digite o número da sua conta: '))
-        conta_org = buscar_conta_por_numero(numero_conta_org)
+        conta_orig, numero_conta_orig = ler_conta()
 
-        if conta_org:
-            numero_conta_dest = int(input('Informe o numero da conta de destino da sua transferência: '))
-            conta_dest = buscar_conta_por_numero(numero_conta_dest)
-
-            if conta_dest:
-                valor = float(input("Informe o valor que deseja transferir: R$ "))
-                conta_org.transferir(conta_dest,valor)
-                print('Operação realizada com sucesso!!!')
-            else:
-                print(f'\t\t Não encontramos a conta de número {numero_conta_dest}')
-
-        else:
-            print(f'\t\t Não encontramos a conta de número {numero_conta_org}')
-
-    sleep(2)
-
+        if valida_conta(conta_orig, numero_conta_orig, efetuar_transferencia):
+            conta_dest, numero_conta_dest = ler_conta()
+            if valida_conta(conta_dest, numero_conta_dest, ler_conta):
+                valor = ler_valor(tipo_operacao)
+                eh_menor, valor = valor_menor_q_saldo_total(valor, conta.saldo_total, tipo_operacao)
+                if eh_menor:
+                    conta_orig.transferir(conta_dest, valor)
 
 def listar_contas():
 
@@ -124,8 +112,6 @@ def listar_contas():
         for conta in contas:
             print(conta)
             print('\t\t ' + '*' * 40)
-
-    sleep(2)
 
 
 def listar_clientes():
@@ -137,7 +123,6 @@ def listar_clientes():
             print(cliente)
             print('\t\t '+'*' * 40)
 
-    sleep(2)
 
 def pesquisar_conta():
     if possui_contas():
@@ -151,7 +136,6 @@ def pesquisar_conta():
             print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
             pesquisar_conta()
 
-    sleep(2)
 
 def pesquisar_cliente():
     if possui_clientes():
@@ -164,8 +148,6 @@ def pesquisar_cliente():
         else:
             print(f'Não encontramos cliente(s) com o número {numero_cliente}. Verifique o ID do cliente!!')
             pesquisar_cliente()
-
-    sleep(2)
 
 
 def imprimir_extrato():
@@ -223,7 +205,11 @@ def valida_conta(conta, numero_conta, funcao_banco):
         print(f'Não foram encontradas contas com o número {numero_conta}. Verifique o número da conta!!')
         funcao_banco()
 
+def ler_conta():
+    numero_conta = int(input('Digite o número da sua conta: '))
+    conta = buscar_conta_por_numero(numero_conta)
 
+    return conta, numero_conta
 def ler_valor(tipo_operacao):
     valor = float(input(f"Informe o valor que deseja {tipo_operacao}: R$ "))
     return valor
