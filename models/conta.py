@@ -4,13 +4,12 @@ from datetime import date
 
 class Conta:
     codigo = 1001
-    limite = 200
 
     def __init__(self, cliente):
         self.__numero = Conta.codigo
         self.__cliente = cliente
         self.__saldo = 0
-        self.__limite = Conta.limite
+        self.__limite = 200
         self.__saldo_total = self.__calcula_saldo_total
         self.__extrato = ''
         Conta.codigo += 1
@@ -52,11 +51,13 @@ class Conta:
         return self.__extrato
 
     @extrato.setter
-    def _extrato(self, msg):
+    def extrato(self, msg):
         self.__extrato = msg
 
     @property
     def __calcula_saldo_total(self):
+        if self.saldo < 0:
+            return self.limite
         return self.saldo + self.limite
 
     def __str__(self):
@@ -66,14 +67,14 @@ class Conta:
          Limite de Cheque Especial: {format_float_for_str(self.limite)}
          Saldo Total:               {format_float_for_str(self.saldo_total)}'''
 
-    def depositar(self, valor):
+    def depositar(self, valor, msg):
 
         self._saldo += valor
         self._saldo_total = self.__calcula_saldo_total
-        if self.saldo <= 0 and self.limite < Conta.limite and valor <= Conta.limite:
-            self.limite += valor
-        self._extrato += f'\t\t => Depósito    R$ {valor:.2f}    {date_for_str(date.today())}\n'
-        print(f'Valor de R$ {valor:.2f} depositados com sucesso!!')
+        # if self.saldo <= 0 and self.limite < Conta.limite and valor <= Conta.limite:
+        #    self.limite += valor
+        self.extrato += f'\t\t => {msg}  {valor:.2f}    {date_for_str(date.today())}\n'
+        print(f'{msg} {valor:.2f} eftuado com sucesso!!')
         print(f'Saldo Atual R$ {self.saldo_total:.2f}')
 
 
@@ -91,13 +92,16 @@ class Conta:
             else:
                 print(f'\t\t Saque não efetuado!! Valor maior que o limite de cheque especial.\n\t\t Limite: R$ {self.limite:.2f}.')
 
-        self._extrato += f'\t\t => Saque      -R$ {valor:.2f}    {date_for_str(date.today())}\n'
+        self.extrato += f'\t\t => {msg}     -{valor:.2f}    {date_for_str(date.today())}\n'
         print(f'{msg} {valor:.2f} efetuado com sucesso!!')
         print(f'Saldo Atual R$ {self.saldo_total:.2f}')
 
     def transferir(self, conta_destino, valor):
-        self.sacar(valor, 'Transferência de R$')
-        conta_destino.depositar(valor)
+        msg = 'Transferência de R$'
+        self.sacar(valor, msg)
+        self.extrato += f'\t\t => Para {conta_destino.cliente.nome}\n'
+        conta_destino.depositar(valor, msg)
+        conta_destino.extrato += f'\t\t => De {self.cliente.nome}\n'
     def exibir_extrato(self):
         print('\t\t ************** Extrato *****************')
         print('\t\t -  Operação   | Valor R$   | Data  -')
