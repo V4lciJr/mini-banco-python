@@ -49,7 +49,23 @@ Toda a lógica das operações estão praticamente implementadas na classe conta, ma
 ### Criar conta
 Essa opção solicitará os dados do cliente, como nome, cpf e etc, em seguida ela cria a conta do cliente no sistema. Essa é função que praticamente não tem validação, portanto, nome, cpf e email, como são strings, ele vai aceitar qualquer coisa que seja uma string, na data de nascimento, caso não esteja no padrão (dd/mm/aaaa) o programa dará um erro e parará a execução, esse tratamento será feito com exceções futuramente. Ao criar a conta ele exibe no painel conta criada com sucesso, contendo os dados principais da conta.
 
+### Sacar
+Com a conta cadastrada, podemos fazer qualquer operação e uma delas é o saque, como a conta é criada já com um limite de cheque especial de R$ 200,00, o usuário caso esteja no aperto pode sacar até esse valor, acima disso, a operação não permite. A função de saque ela valida se possui saldo e se o valor é maior que zero para poder efetuar a operaçao.
 
+### Depositar
+A operação de depósito primeiro valida se o valor é maior que zero e também assim como as outras, valida se a conta existe para poder efetuar a operação, em seguida pega o valor digitado e soma com o saldo da conta.
+
+### Transferir
+A operação faz todas as validações de saque e depósito, como também se as contas de origem e destino existem, por baixo dos panos e para simplificar, a função de transferir ela efetua um "saque" na conta de origem e faz um depósito na conta destino.
+
+### Listar Contas
+Operação básica e auxiliar, verifica se possui contas cadastradas, caso a resposta seja sim, ela varre a lista de contas e exibe o relatório na tela.
+
+### Listar Clientes
+Esta operação segue mesma lógica da função listar contas, a diferença é que ela percorre uma lista de clientes, que caso existam cadastrados, ele imprime o relatório na tela.
+
+### Pesquisar cliente Conta e Pesquisar cliente por número
+Esas operações também possuem lógicas semelhantes. Primeiro elas validam se possuem contas ou clientes cadastrados, caso sim, validam se possuem contas ou clientes com número que foi solicitado, caso sim imprime-se os dados na tela, caso não, uma mensagem informado que não foram encontradas contas ou clientes com aquele número, é exibida.
 
 ### Imprimir Extrato
 Essa operação deve listar todos os depósitos, saques e transferências realizados na conta. No fim da listagem deve ser exibido o saldo atual da conta. Se o extrato estiver em branco, deve exibir a mensagem: **Não foram realizadas movimentações**
@@ -58,4 +74,4 @@ Os valores devem ser exibidos utilizando R$ xxx.xx.
 **Ex:** 1750,20 = R$ 1750,20
 
 
-! Este projeto visa melhorar e praticar o aprendizado nos estudo em python e talvez ajude alguém que precisa implementar uma lógica parecido ou algum projeto semelhante na universade ou nos estudos.
+! Este projeto visa melhorar e praticar o aprendizado nos estudo em python e talvez ajude alguém que precisa implementar uma lógica parecido ou algum projeto semelhante na universade ou nos estudos. Lembrando que nem todas as validações estão funcionando perfeitamente, essas melhorias serão aplicadas com o tempo.
